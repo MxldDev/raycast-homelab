@@ -100,11 +100,15 @@ export default function MenuBar() {
     backupIssues.length +
     (backrestUrl && backups.error ? 1 : 0);
 
-  const dlSpeed = (dl?.qbit?.dlSpeed ?? 0) + (dl?.sab?.speedBps ?? 0);
+  const dlSpeed =
+    (dl?.qbit?.dlSpeed ?? 0) +
+    (dl?.sab?.speedBps ?? 0) +
+    (dl?.nzbget?.speedBps ?? 0);
   const upSpeed = dl?.qbit?.upSpeed ?? 0;
   const activeItems = [
     ...(dl?.qbit?.downloading ?? []).map((i) => ({ ...i, source: "qbit" })),
     ...(dl?.sab?.items ?? []).map((i) => ({ ...i, source: "sab" })),
+    ...(dl?.nzbget?.items ?? []).map((i) => ({ ...i, source: "nzbget" })),
   ].filter((i) => !i.paused);
   const hasActivity = activeItems.length > 0 || dlSpeed > 1e4 || upSpeed > 1e4;
 

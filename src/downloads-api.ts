@@ -3,6 +3,7 @@ import { has, requireUrl, setting, urlGroup } from "./config";
 export const DL_URLS = urlGroup({
   qbit: "qbitUrl",
   sab: "sabnzbdUrl",
+  nzbget: "nzbgetUrl",
   slskd: "slskdUrl",
 });
 
@@ -187,6 +188,71 @@ interface SabQueue {
     }[];
   };
 }
+
+// ---------- NZBget (JSON-RPC, basic auth) ----------
+
+function nzbgetPrefs() {
+  return {
+    url: requireUrl("nzbgetUrl", "NZBget"),
+    username: setting("nzbgetUsername") || "nzbget",
+    password: setting("nzbgetPassword"),
+  };
+}
+
+async function nzbgetRpc<T>(method: string, params: unknown[] = []): Promise<T> {
+  const { url, username, password } = nzbgetPrefs();
+  const res = await fetch(`${url}/jsonrpc`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Basic ${Buffer.from(`${username}:${password}`).toString("base64")}`,
+    },
+    body: JSON.stringify({ method, params }),
+    signal: AbortSignal.timeout(TIMEOUT_MS),
+  });
+  if (res.status === 401) throw new Error("NZBget: wrong username or password");
+  if (!res.ok) throw new Error(`NZBget → HTTP ${res.status}`);
+  const data = (await res.json()) as { result?: T; error?: { message?: string } };
+  if (data.error) throw new Error(`NZBget: ${data.error.message ?? "RPC error"}`);
+  return data.result as T;
+}
+
+export async function nzbgetToggle(
+  nzbId: string,
+  action: "pause" | "resume",
+): Promise<void> {
+  const ok = await nzbgetRpc<boolean>("editqueue", [
+    action === "pause" ? "GroupPause" : "GroupResume",
+    "",
+    [Number(nzbId)],
+  ]);
+  if (!ok) throw new Error(`NZBget refused to ${action} #${nzbId}`);
+}
+
+// NZBget splits 64-bit byte counts into Lo/Hi 32-bit halves.
+function nzbBytes(lo: number, hi: number): number {
+  return hi * 4294967296 + lo;
+}
+
+interface NzbgetStatus {
+  DownloadRate: number; // bytes/s
+  DownloadPaused: boolean;
+  Download2Paused: boolean;
+  RemainingSizeLo: number;
+  RemainingSizeHi: number;
+}
+interface NzbgetGroup {
+  NZBID: number;
+  NZBName: string;
+  Status: string; // QUEUED | DOWNLOADING | PAUSED | FETCHING | PP_QUEUED | UNPACKING | ...
+  FileSizeLo: number;
+  FileSizeHi: number;
+  RemainingSizeLo: number;
+  RemainingSizeHi: number;
+  PausedSizeLo: number;
+  PausedSizeHi: number;
+  ActiveDownloads: number;
+}
 // ---------- slskd (Soulseek) ----------
 
 interface SlskdFile {
@@ -277,6 +343,12 @@ export interface DownloadsData {
     timeLeft: string;
     items: DownloadItem[];
   };
+  nzbget?: {
+    speedBps: number;
+    paused: boolean;
+    timeLeft: string;
+    items: DownloadItem[];
+  };
   slskd?: { items: DownloadItem[]; dlSpeed: number };
   errors: string[];
   fetchedAt: number;
@@ -347,6 +419,43 @@ export async function loadDownloads(): Promise<DownloadsData> {
             state: s.status.toLowerCase(),
             paused: s.status === "Paused",
           })),
+        };
+      }),
+    );
+
+
+  if (has("nzbgetUrl", "nzbgetPassword"))
+    tasks.push(
+      Promise.all([
+        nzbgetRpc<NzbgetStatus>("status"),
+        nzbgetRpc<NzbgetGroup[]>("listgroups", [0]),
+      ]).then(([st, groups]) => {
+        const rate = st.DownloadRate;
+        const remaining = nzbBytes(st.RemainingSizeLo, st.RemainingSizeHi);
+        data.nzbget = {
+          speedBps: rate,
+          paused: st.DownloadPaused || st.Download2Paused,
+          timeLeft: rate > 0 ? fmtEta(Math.round(remaining / rate)) : "∞",
+          items: groups.map((g) => {
+            const size = nzbBytes(g.FileSizeLo, g.FileSizeHi);
+            const left = nzbBytes(g.RemainingSizeLo, g.RemainingSizeHi);
+            // Status lags while in-flight articles finish; the paused byte
+            // count flips immediately, so treat "everything left is paused" as paused.
+            const pausedBytes = nzbBytes(g.PausedSizeLo, g.PausedSizeHi);
+            const paused =
+              g.Status === "PAUSED" || (left > 0 && pausedBytes >= left);
+            const active = !paused && g.ActiveDownloads > 0 && rate > 0;
+            return {
+              id: String(g.NZBID),
+              name: g.NZBName,
+              progress: size > 0 ? 1 - left / size : 0,
+              detail: `${fmtSize(left)} left of ${fmtSize(size)}`,
+              speed: active ? fmtSpeed(rate) : undefined,
+              eta: active ? fmtEta(Math.round(left / rate)) : undefined,
+              state: g.Status.toLowerCase().replace("pp_", "post-"),
+              paused,
+            };
+          }),
         };
       }),
     );

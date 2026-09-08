@@ -258,6 +258,7 @@ function links(): { title: string; url: string; icon: Icon }[] {
     { title: "TrueNAS", url: URLS.truenas, icon: Icon.HardDrive },
     { title: "qBittorrent", url: DL_URLS.qbit, icon: Icon.Download },
     { title: "SABnzbd", url: DL_URLS.sab, icon: Icon.Download },
+    { title: "NZBget", url: DL_URLS.nzbget, icon: Icon.Download },
     {
       title: "Paperless",
       url: optionalUrl("paperlessUrl"),
@@ -347,10 +348,15 @@ export default function Home() {
   const d = dls.data;
 
   const cpuTemp = s?.temps?.server.cpu?.temp;
-  const dlSpeed = (d?.qbit?.dlSpeed ?? 0) + (d?.sab?.speedBps ?? 0);
+  const dlSpeed =
+    (d?.qbit?.dlSpeed ?? 0) +
+    (d?.sab?.speedBps ?? 0) +
+    (d?.nzbget?.speedBps ?? 0);
   const upSpeed = d?.qbit?.upSpeed ?? 0;
   const activeCount =
-    (d?.qbit?.downloading.length ?? 0) + (d?.sab?.items.length ?? 0);
+    (d?.qbit?.downloading.length ?? 0) +
+    (d?.sab?.items.length ?? 0) +
+    (d?.nzbget?.items.length ?? 0);
   const backupNeedsAttention = Boolean(
     backups.error ||
     backups.data?.warnings.length ||

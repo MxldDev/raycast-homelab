@@ -1,5 +1,14 @@
 # Changelog
 
+## 2026-09-08 — NZBget
+
+- Added NZBget as a second usenet client in Homelab Downloads: live speed and
+  time left, queued items with progress, pause and resume per item.
+- NZBget activity counts toward the menu bar download marker and the Home
+  Downloads row; the web UI is linked from Home and via ⌘⇧N in Downloads.
+- New optional settings `NZBGET_URL`, `NZBGET_USERNAME`, `NZBGET_PASSWORD`
+  (JSON-RPC over basic auth). SABnzbd and NZBget can be configured together.
+
 ## 2026-09-05 — Services & Jobs
 
 - Added Services & Jobs for native systemd services and timers in both the system

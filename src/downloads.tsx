@@ -16,6 +16,7 @@ import {
   DownloadItem,
   fmtSpeed,
   loadDownloads,
+  nzbgetToggle,
   qbitToggle,
   sabToggle,
 } from "./downloads-api";
@@ -41,7 +42,10 @@ export default function Downloads() {
     return () => clearInterval(t);
   }, [revalidate]);
 
-  async function toggle(source: "qbit" | "sab", item: DownloadItem) {
+  async function toggle(
+    source: "qbit" | "sab" | "nzbget",
+    item: DownloadItem,
+  ) {
     const action =
       source === "qbit"
         ? item.paused
@@ -53,7 +57,9 @@ export default function Downloads() {
     try {
       if (source === "qbit")
         await qbitToggle(item.id, action as "start" | "stop");
-      else await sabToggle(item.id, action as "pause" | "resume");
+      else if (source === "sab")
+        await sabToggle(item.id, action as "pause" | "resume");
+      else await nzbgetToggle(item.id, action as "pause" | "resume");
       await showToast({
         style: Toast.Style.Success,
         title: `${action} → ${item.name.slice(0, 40)}`,
@@ -90,11 +96,21 @@ export default function Downloads() {
           shortcut={Keyboard.Shortcut.Common.Save}
         />
       )}
+      {DL_URLS.nzbget && (
+        <Action.OpenInBrowser
+          title="Open Nzbget"
+          url={DL_URLS.nzbget}
+          shortcut={{ modifiers: ["cmd", "shift"], key: "n" }}
+        />
+      )}
     </>
   );
   const commonPanel = <ActionPanel>{common}</ActionPanel>;
 
-  function activeItem(source: "qbit" | "sab", item: DownloadItem) {
+  function activeItem(
+    source: "qbit" | "sab" | "nzbget",
+    item: DownloadItem,
+  ) {
     return (
       <List.Item
         key={item.id}
@@ -183,8 +199,8 @@ export default function Downloads() {
         )}
       </List.Section>
 
-      <List.Section title="Usenet — SABnzbd">
-        {data?.sab && (
+      {data?.sab && (
+        <List.Section title="Usenet — SABnzbd">
           <List.Item
             icon={{ source: Icon.LineChart, tintColor: Color.Purple }}
             title={
@@ -203,9 +219,35 @@ export default function Downloads() {
             ]}
             actions={commonPanel}
           />
-        )}
-        {data?.sab?.items.map((i) => activeItem("sab", i))}
-      </List.Section>
+          {data.sab.items.map((i) => activeItem("sab", i))}
+        </List.Section>
+      )}
+
+      {data?.nzbget && (
+        <List.Section title="Usenet — NZBget">
+          <List.Item
+            icon={{ source: Icon.LineChart, tintColor: Color.Purple }}
+            title={
+              data.nzbget.paused
+                ? "PAUSED"
+                : `↓ ${fmtSpeed(data.nzbget.speedBps)}`
+            }
+            subtitle={
+              data.nzbget.items.length > 0
+                ? `${data.nzbget.items.length} queued · ${data.nzbget.timeLeft} left`
+                : "queue empty"
+            }
+            accessories={[
+              {
+                tag: { value: "live", color: Color.Green },
+                tooltip: "refreshes every 5s",
+              },
+            ]}
+            actions={commonPanel}
+          />
+          {data.nzbget.items.map((i) => activeItem("nzbget", i))}
+        </List.Section>
+      )}
 
       {data?.slskd && (
         <List.Section title="Soulseek — slskd">

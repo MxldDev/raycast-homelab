@@ -20,7 +20,7 @@ extension hides them.
 |---|---|
 | **Homelab Home** — every command and quick link, Esc returns here<br><img src="docs/screenshots/home-commands.jpg"> | **Homelab Menu Bar** — server, NAS and downloads at a glance<br><img src="docs/screenshots/menu-bar.jpg" width="420"> |
 | **Homelab Stats** — CPU, memory, uptime, NAS pool, drive temps<br><img src="docs/screenshots/stats.jpg"> | **Top processes** — the same view scrolled down<br><img src="docs/screenshots/stats-processes.jpg"> |
-| **Homelab Downloads** — qBittorrent and SABnzbd live<br><img src="docs/screenshots/downloads.jpg"> | **Disk Health** — Scrutiny SMART for every host<br><img src="docs/screenshots/disk-health.jpg"> |
+| **Homelab Downloads** — qBittorrent, SABnzbd and NZBget live<br><img src="docs/screenshots/downloads.jpg"> | **Disk Health** — Scrutiny SMART for every host<br><img src="docs/screenshots/disk-health.jpg"> |
 | **Discover Media** — Jellyseerr trending and search<br><img src="docs/screenshots/discover-media.jpg"> | **Request from the grid** — all seasons or a profile<br><img src="docs/screenshots/discover-actions.jpg"> |
 | **Request History** — approve, decline, retry<br><img src="docs/screenshots/request-history.jpg"> | **Continue Watching** — Jellyfin resume and next up<br><img src="docs/screenshots/continue-watching.jpg"> |
 | **Media Calendar** — upcoming releases from the arr stack<br><img src="docs/screenshots/media-calendar.jpg"> | **Subtitles** — sync queue and Bazarr wanted list<br><img src="docs/screenshots/subtitles.jpg"> |
@@ -39,7 +39,7 @@ extension hides them.
 | **Homelab Home** | One place for everything: live status rows, every command, quick links. Esc returns here. |
 | **Homelab Stats** | CPU, memory, disks, uptime, temperatures, NAS pool, top processes |
 | **Homelab Menu Bar** | CPU load and temperature in the menu bar, alerts when something is down (macOS only) |
-| **Homelab Downloads** | qBittorrent, SABnzbd and slskd activity, pause and resume |
+| **Homelab Downloads** | qBittorrent, SABnzbd, NZBget and slskd activity, pause and resume |
 | **Discover Media** | Browse trending and popular, search, and request movies and shows in Jellyseerr |
 | **Request History** | Pending and past Jellyseerr requests: approve, decline, retry, delete |
 | **Continue Watching** | Jellyfin now playing, resume, next up |
@@ -131,6 +131,7 @@ The env file is read once per command launch. After editing it, re-run the comma
 | TrueNAS | `TRUENAS_URL`, `TRUENAS_API_KEY` | Credentials → Local Users → API Keys |
 | qBittorrent | `QBIT_URL`, `QBIT_USERNAME`, `QBIT_PASSWORD` | Web UI login |
 | SABnzbd | `SABNZBD_URL`, `SABNZBD_API_KEY` | Config → General → API Key |
+| NZBget | `NZBGET_URL`, `NZBGET_USERNAME`, `NZBGET_PASSWORD` | Settings → Security → ControlUsername / ControlPassword. Username defaults to `nzbget`. |
 | slskd | `SLSKD_URL`, `SLSKD_API_KEY` | Options → Web → Authentication → API keys |
 | Jellyfin | `JELLYFIN_URL`, `JELLYFIN_API_KEY`, `JELLYFIN_USER_ID` | Dashboard → API Keys. User ID optional. |
 | Jellyseerr | `JELLYSEERR_URL`, `JELLYSEERR_API_KEY` | Settings → General → API Key |

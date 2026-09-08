@@ -42,7 +42,7 @@
       "name": "downloads",
       "title": "Homelab Downloads",
       "subtitle": "Homelab",
-      "description": "qBittorrent and SABnzbd activity in one place",
+      "description": "qBittorrent, SABnzbd, NZBget and slskd activity in one place",
       "mode": "view"
     },
     {
@@ -450,6 +450,29 @@
       "name": "sabnzbdApiKey",
       "title": "SABnzbd API Key",
       "description": "Config → General → API Key.",
+      "type": "password",
+      "required": false
+    },
+    {
+      "name": "nzbgetUrl",
+      "title": "NZBget URL",
+      "description": "Base URL of your NZBget instance. Leave empty to hide NZBget features.",
+      "type": "textfield",
+      "required": false,
+      "placeholder": "https://nzbget.example.com"
+    },
+    {
+      "name": "nzbgetUsername",
+      "title": "NZBget Username",
+      "description": "Settings → Security → ControlUsername.",
+      "type": "textfield",
+      "required": false,
+      "placeholder": "nzbget"
+    },
+    {
+      "name": "nzbgetPassword",
+      "title": "NZBget Password",
+      "description": "Settings → Security → ControlPassword.",
       "type": "password",
       "required": false
     },
