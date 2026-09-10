@@ -53,6 +53,7 @@ extension hides them.
 | **Ebooks** | Calibre-Web search, download, send to Kindle |
 | **Nextcloud Files and Sharing** | Recent files, folder browsing, Elasticsearch/OCR search, downloads, expiring share links and revocation |
 | **Paperless Search** | Recent documents and full-text OCR search, tags and correspondent, preview, open and download |
+| **Vehicle Expenses** | LubeLogger fuel-ups, service, repairs and car expenses; log a new record |
 | **Send to MeTube** | Queue a video or audio download from the URL on your clipboard |
 | **Homelab Monitors** | Uptime Kuma: what is down right now |
 | **Notifications** | ntfy messages from the last seven days |
@@ -146,6 +147,7 @@ The env file is read once per command launch. After editing it, re-run the comma
 | Calibre-Web | `CALIBRE_URL`, `CALIBRE_USER`, `CALIBRE_PASSWORD` | Web UI login |
 | Nextcloud | `NEXTCLOUD_URL`, `NEXTCLOUD_USERNAME`, `NEXTCLOUD_APP_PASSWORD` | User ID and app password from Personal settings → Security. |
 | Paperless-ngx | `PAPERLESS_URL`, `PAPERLESS_TOKEN` | Your Paperless profile → API Auth Token. The token uses your user's document permissions. |
+| LubeLogger | `LUBELOGGER_URL`, optional `LUBELOGGER_USERNAME`/`LUBELOGGER_PASSWORD` | No auth unless a LubeLogger account exists, then basic auth. |
 | MeTube | `METUBE_URL`, `METUBE_FOLDERS` | No auth. Folders: `name\|Label[\|video],…` |
 | Uptime Kuma | `KUMA_URL`, `KUMA_STATUS_SLUG` or `KUMA_API_KEY` | Status page slug needs no key. Settings → API Keys for all monitors. |
 | ntfy | `NTFY_URL`, `NTFY_TOPICS` | Comma-separated topics |
@@ -312,6 +314,30 @@ Text** opens OCR text in Raycast; **Preview File** opens a downloaded preview in
 default macOS app. You can also open the document in Paperless or save its original
 file or archived PDF (when available) to Downloads. **Copy OCR Text** copies the full
 extracted text. Files larger than 100 MB can be downloaded through Paperless instead.
+
+### Vehicle Expenses
+
+Set **LubeLogger URL** to your instance's base URL (without `/api`), or use
+`LUBELOGGER_URL` in the env file. LubeLogger's API needs no credentials unless the
+instance has a user account; set the username and password only in that case.
+`LUBELOGGER_CURRENCY`, `LUBELOGGER_DISTANCE_UNIT` and `LUBELOGGER_VOLUME_UNIT` are
+display labels (LubeLogger's API reports none), and `LUBELOGGER_VEHICLE_ID` picks which
+vehicle the Homelab Home row summarises.
+
+The command shows the vehicle's odometer, spend this year, an all-time breakdown by
+record type, and any due reminders, followed by every record grouped by year with a
+per-year total. The dropdown filters to fuel-ups, service, repairs, upgrades, expenses
+or odometer readings; search matches descriptions, notes and tags. **⌘N** logs a new
+record — the form adapts to the type, pre-fills the last odometer reading, and asks for
+litres and fill-to-full only for fuel-ups. **⌃X** deletes a record after a confirmation.
+
+LubeLogger formats and parses numbers in its server's locale, so on a `bs-BA` instance
+`12.50` would be stored as `1250`. The extension detects the separator from the data
+LubeLogger returns, verifies every new record round-trips, and rolls the record back
+rather than saving a wrong amount; **LubeLogger Decimal Separator** overrides the
+detection. Note that LubeLogger mirrors a record's odometer into its own odometer log
+and keeps that entry when the record is deleted — the extension only cleans up mirrored
+entries created by a rolled-back write.
 
 ### Nextcloud Files and Sharing
 

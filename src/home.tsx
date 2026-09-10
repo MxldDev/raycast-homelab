@@ -57,6 +57,15 @@ import { loadMonthSpend, loadSubscriptions } from "./money-api";
 import { hasImmichKey, loadTodayMemories } from "./immich-api";
 import { ADGUARD_URL, hasAdguardCreds, loadAdguard } from "./adguard-api";
 import AdGuard, { ProtectionActions } from "./adguard";
+import Vehicle from "./vehicle";
+import {
+  currency as vehicleCurrency,
+  distanceUnit,
+  hasLubelogger,
+  loadVehicleSummary,
+  LUBELOGGER_URL,
+  vehicleWebUrl,
+} from "./lubelogger-api";
 
 // slower than the child views: Home keeps polling while a pushed view is open
 const POLL_MS = 20000;
@@ -112,6 +121,13 @@ const COMMANDS = [
     subtitle: "Firefly Pico assistant & templates",
     icon: Icon.Coins,
     view: () => <Transaction />,
+  },
+  {
+    name: "vehicle",
+    title: "Vehicle Expenses",
+    subtitle: "LubeLogger — fuel, service, repairs",
+    icon: Icon.Car,
+    view: () => <Vehicle />,
   },
   {
     name: "monitors",
@@ -312,6 +328,11 @@ export default function Home() {
   const spend = useCachedPromise(() => quiet(loadMonthSpend), [], {
     keepPreviousData: true,
   });
+  const car = useCachedPromise(
+    () => (hasLubelogger() ? quiet(loadVehicleSummary) : Promise.resolve(undefined)),
+    [],
+    { keepPreviousData: true, onError: silentError("LubeLogger") },
+  );
   const subs = useCachedPromise(() => quiet(loadSubscriptions), [], {
     keepPreviousData: true,
   });
@@ -593,6 +614,47 @@ export default function Home() {
                   title="All Subscriptions & Bills"
                   icon={Icon.Calendar}
                   target={<BillsList />}
+                />
+              </ActionPanel>
+            }
+          />
+        )}
+        {car.data && (
+          <List.Item
+            icon={{ source: Icon.Car, tintColor: Color.Blue }}
+            title="Car"
+            subtitle={[
+              `${Math.round(car.data.odometer).toLocaleString()} ${distanceUnit()}`,
+              `${Math.round(car.data.totalCost).toLocaleString()} ${vehicleCurrency()}`.trim() +
+                " logged",
+              car.data.nextReminder
+                ? `next: ${car.data.nextReminder}`
+                : undefined,
+            ]
+              .filter(Boolean)
+              .join(" · ")}
+            accessories={
+              car.data.remindersDue > 0
+                ? [
+                    {
+                      tag: {
+                        value: `${car.data.remindersDue} due`,
+                        color: Color.Orange,
+                      },
+                    },
+                  ]
+                : []
+            }
+            actions={
+              <ActionPanel>
+                <Action.Push
+                  title="Open Vehicle Expenses"
+                  icon={Icon.Car}
+                  target={<Vehicle />}
+                />
+                <Action.OpenInBrowser
+                  title="Open Lubelogger"
+                  url={vehicleWebUrl(car.data.vehicle.id) || LUBELOGGER_URL}
                 />
               </ActionPanel>
             }

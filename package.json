@@ -6,7 +6,7 @@
     "macOS",
     "Windows"
   ],
-  "description": "Your whole homelab in Raycast: stats, downloads, media requests, monitors, music, photos, books, documents, services, jobs, DNS, backups and money — one hub, every service optional.",
+  "description": "Your whole homelab in Raycast: stats, downloads, media requests, monitors, music, photos, books, documents, services, jobs, DNS, backups and money \u2014 one hub, every service optional.",
   "icon": "icon.png",
   "author": "aleksandar",
   "license": "MIT",
@@ -63,7 +63,7 @@
       "name": "requests",
       "title": "Request History",
       "subtitle": "Homelab",
-      "description": "Past and pending Jellyseerr requests — approve, decline, retry, delete",
+      "description": "Past and pending Jellyseerr requests \u2014 approve, decline, retry, delete",
       "mode": "view",
       "keywords": [
         "jellyseerr",
@@ -90,7 +90,7 @@
       "name": "monitors",
       "title": "Homelab Monitors",
       "subtitle": "Homelab",
-      "description": "Uptime Kuma monitor status — what's down right now",
+      "description": "Uptime Kuma monitor status \u2014 what's down right now",
       "mode": "view",
       "keywords": [
         "kuma",
@@ -332,7 +332,7 @@
       "name": "nudge",
       "title": "Nudge Subtitles",
       "subtitle": "Homelab",
-      "description": "Shift a subtitle file by ±ms (pins it against the nightly sync), undo, unpin",
+      "description": "Shift a subtitle file by \u00b1ms (pins it against the nightly sync), undo, unpin",
       "mode": "view",
       "keywords": [
         "subtitle",
@@ -356,13 +356,31 @@
         "elasticsearch",
         "ocr"
       ]
+    },
+    {
+      "name": "vehicle",
+      "title": "Vehicle Expenses",
+      "subtitle": "Homelab",
+      "description": "LubeLogger \u2014 fuel, service, repairs and car expenses; log a new record",
+      "mode": "view",
+      "keywords": [
+        "lubelogger",
+        "car",
+        "vehicle",
+        "fuel",
+        "mileage",
+        "service",
+        "repair",
+        "expense",
+        "auto"
+      ]
     }
   ],
   "preferences": [
     {
       "name": "configFile",
       "title": "Env File",
-      "description": "Optional dotenv file that supplies any setting left empty here. Keys are UPPER_SNAKE (JELLYFIN_URL, JELLYFIN_API_KEY…). See .env.example.",
+      "description": "Optional dotenv file that supplies any setting left empty here. Keys are UPPER_SNAKE (JELLYFIN_URL, JELLYFIN_API_KEY\u2026). See .env.example.",
       "type": "textfield",
       "required": false,
       "placeholder": "~/.config/raycast-homelab/.env",
@@ -395,7 +413,7 @@
     {
       "name": "homepageUrl",
       "title": "Dashboard URL",
-      "description": "Optional link to your dashboard (Homepage, Dashy…) shown in the menu bar and Home links.",
+      "description": "Optional link to your dashboard (Homepage, Dashy\u2026) shown in the menu bar and Home links.",
       "type": "textfield",
       "required": false,
       "placeholder": "https://home.example.com"
@@ -449,7 +467,7 @@
     {
       "name": "sabnzbdApiKey",
       "title": "SABnzbd API Key",
-      "description": "Config → General → API Key.",
+      "description": "Config \u2192 General \u2192 API Key.",
       "type": "password",
       "required": false
     },
@@ -464,7 +482,7 @@
     {
       "name": "nzbgetUsername",
       "title": "NZBget Username",
-      "description": "Settings → Security → ControlUsername.",
+      "description": "Settings \u2192 Security \u2192 ControlUsername.",
       "type": "textfield",
       "required": false,
       "placeholder": "nzbget"
@@ -472,7 +490,7 @@
     {
       "name": "nzbgetPassword",
       "title": "NZBget Password",
-      "description": "Settings → Security → ControlPassword.",
+      "description": "Settings \u2192 Security \u2192 ControlPassword.",
       "type": "password",
       "required": false
     },
@@ -487,7 +505,7 @@
     {
       "name": "slskdApiKey",
       "title": "slskd API Key",
-      "description": "Options → Web → Authentication → API keys.",
+      "description": "Options \u2192 Web \u2192 Authentication \u2192 API keys.",
       "type": "password",
       "required": false
     },
@@ -502,7 +520,7 @@
     {
       "name": "jellyfinApiKey",
       "title": "Jellyfin API Key",
-      "description": "Dashboard → API Keys.",
+      "description": "Dashboard \u2192 API Keys.",
       "type": "password",
       "required": false
     },
@@ -512,7 +530,7 @@
       "description": "Optional. Whose Continue Watching / Next Up to show; defaults to the first administrator.",
       "type": "textfield",
       "required": false,
-      "placeholder": "e.g. 3f1c…"
+      "placeholder": "e.g. 3f1c\u2026"
     },
     {
       "name": "jellyseerrUrl",
@@ -525,7 +543,7 @@
     {
       "name": "jellyseerrApiKey",
       "title": "Jellyseerr API Key",
-      "description": "Settings → General → API Key (admin).",
+      "description": "Settings \u2192 General \u2192 API Key (admin).",
       "type": "password",
       "required": false
     },
@@ -540,7 +558,7 @@
     {
       "name": "radarrApiKey",
       "title": "Radarr API Key",
-      "description": "Settings → General.",
+      "description": "Settings \u2192 General.",
       "type": "password",
       "required": false
     },
@@ -555,7 +573,7 @@
     {
       "name": "sonarrApiKey",
       "title": "Sonarr API Key",
-      "description": "Settings → General.",
+      "description": "Settings \u2192 General.",
       "type": "password",
       "required": false
     },
@@ -570,7 +588,7 @@
     {
       "name": "lidarrApiKey",
       "title": "Lidarr API Key",
-      "description": "Settings → General.",
+      "description": "Settings \u2192 General.",
       "type": "password",
       "required": false
     },
@@ -585,7 +603,7 @@
     {
       "name": "chaptarrApiKey",
       "title": "Chaptarr / Readarr API Key",
-      "description": "Settings → General (any Readarr-compatible fork).",
+      "description": "Settings \u2192 General (any Readarr-compatible fork).",
       "type": "password",
       "required": false
     },
@@ -600,7 +618,7 @@
     {
       "name": "prowlarrApiKey",
       "title": "Prowlarr API Key",
-      "description": "Settings → General.",
+      "description": "Settings \u2192 General.",
       "type": "password",
       "required": false
     },
@@ -615,7 +633,7 @@
     {
       "name": "bazarrApiKey",
       "title": "Bazarr API Key",
-      "description": "Settings → General.",
+      "description": "Settings \u2192 General.",
       "type": "password",
       "required": false
     },
@@ -638,7 +656,7 @@
     {
       "name": "absToken",
       "title": "Audiobookshelf API Token",
-      "description": "Settings → Users → your user → API token.",
+      "description": "Settings \u2192 Users \u2192 your user \u2192 API token.",
       "type": "password",
       "required": false
     },
@@ -676,7 +694,7 @@
     {
       "name": "immichApiKey",
       "title": "Immich API Key",
-      "description": "Account Settings → API Keys.",
+      "description": "Account Settings \u2192 API Keys.",
       "type": "password",
       "required": false
     },
@@ -714,7 +732,7 @@
     {
       "name": "paperlessToken",
       "title": "Paperless API Token",
-      "description": "Your Paperless profile → API Auth Token. Documents must be visible to this user.",
+      "description": "Your Paperless profile \u2192 API Auth Token. Documents must be visible to this user.",
       "type": "password",
       "required": false
     },
@@ -753,7 +771,7 @@
     {
       "name": "kumaApiKey",
       "title": "Uptime Kuma API Key",
-      "description": "Settings → API Keys. With a key every monitor is read from /metrics, not just the status page.",
+      "description": "Settings \u2192 API Keys. With a key every monitor is read from /metrics, not just the status page.",
       "type": "password",
       "required": false
     },
@@ -807,7 +825,7 @@
     {
       "name": "komodoApiKey",
       "title": "Komodo API Key",
-      "description": "Settings → Profile → API keys.",
+      "description": "Settings \u2192 Profile \u2192 API keys.",
       "type": "password",
       "required": false
     },
@@ -829,7 +847,7 @@
     {
       "name": "servicesSshPort",
       "title": "Services SSH Port",
-      "description": "Optional SSH port (1–65535). Leave empty to use your SSH configuration or port 22.",
+      "description": "Optional SSH port (1\u201365535). Leave empty to use your SSH configuration or port 22.",
       "type": "textfield",
       "required": false,
       "placeholder": "22"
@@ -900,7 +918,7 @@
     {
       "name": "fireflyToken",
       "title": "Firefly III Personal Access Token",
-      "description": "Options → Profile → OAuth → Personal Access Tokens.",
+      "description": "Options \u2192 Profile \u2192 OAuth \u2192 Personal Access Tokens.",
       "type": "password",
       "required": false
     },
@@ -945,9 +963,87 @@
     {
       "name": "nextcloudAppPassword",
       "title": "Nextcloud App Password",
-      "description": "Create an app password in Nextcloud → Personal settings → Security.",
+      "description": "Create an app password in Nextcloud \u2192 Personal settings \u2192 Security.",
       "type": "password",
       "required": false
+    },
+    {
+      "name": "lubeloggerUrl",
+      "type": "textfield",
+      "required": false,
+      "title": "LubeLogger URL",
+      "description": "Base URL of your LubeLogger instance, e.g. https://lubelogger.example.org",
+      "placeholder": "https://lubelogger.example.org"
+    },
+    {
+      "name": "lubeloggerUsername",
+      "type": "textfield",
+      "required": false,
+      "title": "LubeLogger Username",
+      "description": "Only needed if your LubeLogger requires a login (basic auth)",
+      "placeholder": "leave empty when LubeLogger has no account"
+    },
+    {
+      "name": "lubeloggerPassword",
+      "type": "password",
+      "required": false,
+      "title": "LubeLogger Password",
+      "description": "Only needed if your LubeLogger requires a login (basic auth)",
+      "placeholder": "leave empty when LubeLogger has no account"
+    },
+    {
+      "name": "lubeloggerCurrency",
+      "type": "textfield",
+      "required": false,
+      "title": "Vehicle Currency Label",
+      "description": "Shown next to costs, e.g. KM or EUR. LubeLogger's API does not report one.",
+      "placeholder": "KM"
+    },
+    {
+      "name": "lubeloggerDistanceUnit",
+      "type": "textfield",
+      "required": false,
+      "title": "Distance Unit Label",
+      "description": "Defaults to km",
+      "placeholder": "km"
+    },
+    {
+      "name": "lubeloggerVolumeUnit",
+      "type": "textfield",
+      "required": false,
+      "title": "Fuel Volume Unit Label",
+      "description": "Defaults to L",
+      "placeholder": "L"
+    },
+    {
+      "name": "lubeloggerVehicleId",
+      "type": "textfield",
+      "required": false,
+      "title": "Default Vehicle ID",
+      "description": "Which vehicle the Home row summarises when you have several",
+      "placeholder": "first vehicle"
+    },
+    {
+      "name": "lubeloggerDecimal",
+      "type": "dropdown",
+      "required": false,
+      "title": "LubeLogger Decimal Separator",
+      "description": "How LubeLogger's server locale parses numbers. Auto-detects from its own data.",
+      "default": "auto",
+      "data": [
+        {
+          "title": "Auto-detect",
+          "value": "auto"
+        },
+        {
+          "title": "Comma (1234,56)",
+          "value": ","
+        },
+        {
+          "title": "Dot (1234.56)",
+          "value": "."
+        }
+      ]
     }
   ],
   "dependencies": {
